@@ -15,6 +15,14 @@ function render() {
 
     const actions = document.createElement('div');
     actions.className = 'actions';
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "🗑️ Löschen";
+    deleteBtn.onclick = () => {
+      todos = todos.filter(t => t.title !== todo.title);
+      save();
+      render();
+    };
+    actions.appendChild(deleteBtn); 
 
     li.appendChild(title);
     li.appendChild(desc);
