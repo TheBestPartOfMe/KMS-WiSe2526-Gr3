@@ -17,22 +17,44 @@
     .desc { font-size: 14px; color: #555; margin-top: 4px; }
     .actions { text-align: right; margin-top: 6px; }
     .actions button { margin-left: 5px; }
+    
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+    }
   </style>
 </head>
 <body>
   <h1>To-Do Liste</h1>
-  <form id="todoForm">
-  <input type="text" id="taskTitle" placeholder="Titel" required>
-  <textarea id="taskDesc" placeholder="Beschreibung"></textarea>
-  <select id="taskPriority">
-    <option value="Hoch">Hoch</option>
-    <option value="Mittel" selected>Mittel</option>
-    <option value="Niedrig">Niedrig</option>
-  </select>
-  <button type="submit">Hinzufügen</button>
-</form>
-  <ul id="taskList"></ul>
+
+  <div class="wrapper">
+    <div>
+      <form id="todoForm">
+        <input type="text" id="taskTitle" placeholder="Titel" required>
+        <textarea id="taskDesc" placeholder="Beschreibung"></textarea>
+        <select id="taskPriority">
+          <option value="Hoch">Hoch</option>
+          <option value="Mittel" selected>Mittel</option>
+          <option value="Niedrig">Niedrig</option>
+        </select>
+        <button type="submit">Hinzufügen</button>
+      </form>
+      <ul id="taskList"></ul>
+    </div>
+
+    <div>
+      <form id="categoryForm">
+        <input type="text" id="categoryName" placeholder="Kategoriename" required>
+        <button type="submit">Kategorie anlegen</button>
+      </form>
+      <ul id="categoryList"></ul>
+    </div>
+  </div>
+
   <script src="addTask.js"></script>
+  <script src="addCategory.js"></script>
   <script src="showToDo.js"></script>
   <script src="removeTask.js"></script>
 </body>
