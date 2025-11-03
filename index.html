@@ -3,62 +3,350 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Einfache To-Do Liste</title>
+  <title>To-Do Liste</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #fafafa; margin: 40px; }
-    h1 { text-align: center; }
-    form { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px; }
-    input, textarea { padding: 8px; width: 300px; }
-    button { padding: 8px 12px; width: 150px; }
-    ul { list-style: none; padding: 0; max-width: 500px; margin: 0 auto; }
-    li { background: white; border: 1px solid #ddd; margin-bottom: 8px; padding: 10px; border-radius: 4px; }
-    li.done .title { text-decoration: line-through; color: gray; }
-    .title { font-weight: bold; }
-    .desc { font-size: 14px; color: #555; margin-top: 4px; }
-    .actions { text-align: right; margin-top: 6px; }
-    .actions button { margin-left: 5px; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      padding: 40px;
+      min-height: 100vh;
+    }
+    
+    h1 { 
+      text-align: center; 
+      color: white;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
     
     .wrapper {
       display: flex;
       justify-content: center;
       align-items: flex-start;
       gap: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .panel {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      min-width: 350px;
+    }
+    
+    form { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      margin-bottom: 25px;
+    }
+    
+    input, textarea, select { 
+      padding: 12px; 
+      width: 100%;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    
+    button { 
+      padding: 12px 20px; 
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: #3498db;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+    }
+    
+    .btn-success {
+      background: #27ae60;
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background: #219652;
+      transform: translateY(-2px);
+    }
+    
+    .btn-danger {
+      background: #e74c3c;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #c0392b;
+      transform: translateY(-2px);
+    }
+    
+    ul { 
+      list-style: none; 
+      padding: 0; 
+      margin: 0;
+    }
+    
+    li { 
+      background: white;
+      border: 2px solid #f8f9fa;
+      margin-bottom: 12px;
+      padding: 15px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    li:hover {
+      border-color: #3498db;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    li.done {
+      background: #f8fff9;
+      border-left: 5px solid #27ae60;
+    }
+    
+    .title { 
+      font-weight: bold; 
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    
+    .desc { 
+      font-size: 14px; 
+      color: #666;
+      margin-bottom: 10px;
+    }
+    
+    .priority {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+    
+    .priority-high { background: #e74c3c; color: white; }
+    .priority-medium { background: #f39c12; color: white; }
+    .priority-low { background: #27ae60; color: white; }
+    
+    .actions { 
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    
+    .actions button {
+      padding: 6px 12px;
+      font-size: 12px;
+      width: auto;
+    }
+    
+    .category-item {
+      background: #f8f9fa;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      border-left: 4px solid #9b59b6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .category-item:hover {
+      background: #e8f4fd;
+    }
+    
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-size: 1.4em;
+    }
+    
+    h3 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 1.2em;
     }
   </style>
 </head>
 <body>
-  <h1>To-Do Liste</h1>
+  <h1>📝 To-Do Liste</h1>
 
   <div class="wrapper">
-    <div>
+    <!-- Aufgaben Panel -->
+    <div class="panel">
+      <h2>🎯 Aufgaben</h2>
       <form id="todoForm">
-        <input type="text" id="taskTitle" placeholder="Titel" required>
+        <input type="text" id="taskTitle" placeholder="Aufgabentitel" required>
         <textarea id="taskDesc" placeholder="Beschreibung"></textarea>
         <select id="taskPriority">
-          <option value="Hoch">Hoch</option>
-          <option value="Mittel" selected>Mittel</option>
-          <option value="Niedrig">Niedrig</option>
+          <option value="Hoch">🔴 Hoch</option>
+          <option value="Mittel" selected>🟡 Mittel</option>
+          <option value="Niedrig">🟢 Niedrig</option>
         </select>
-        <button type="submit">Hinzufügen</button>
+        <button type="submit" class="btn-primary">➕ Aufgabe hinzufügen</button>
       </form>
       <ul id="taskList"></ul>
     </div>
 
-    <div>
+    <!-- Kategorien Panel -->
+    <div class="panel">
+      <h2>📂 Kategorien</h2>
       <form id="categoryForm">
         <input type="text" id="categoryName" placeholder="Kategoriename" required>
-        <button type="submit">Kategorie anlegen</button>
+        <button type="submit" class="btn-success">📁 Kategorie anlegen</button>
       </form>
       <ul id="categoryList"></ul>
     </div>
   </div>
 
-  <script src="addTask.js"></script>
-  <script src="addCategory.js"></script>
-  <script src="showToDo.js"></script>
-  <script src="removeTask.js"></script>
-  <script src="filterTasks.js"></script>
-  <script src="showCategories.js"></script>
-  <script src="editPriority.js"></script>
+  <script>
+    const titleInput = document.getElementById('taskTitle');
+    const descInput = document.getElementById('taskDesc');
+    const priorityInput = document.getElementById('taskPriority');
+    const list = document.getElementById('taskList');
+    const form = document.getElementById('todoForm');
+
+    let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    let categories = JSON.parse(localStorage.getItem('categories') || '[]');
+
+    function render() {
+      list.innerHTML = '';
+      todos.forEach((todo, index) => {
+        const li = document.createElement('li');
+        if (todo.done) li.classList.add('done');
+
+        const title = document.createElement('div');
+        title.className = 'title';
+        
+        const prioritySpan = document.createElement('span');
+        prioritySpan.className = `priority priority-${todo.priority.toLowerCase()}`;
+        prioritySpan.textContent = todo.priority;
+        
+        title.textContent = todo.title;
+        title.appendChild(prioritySpan);
+
+        const desc = document.createElement('div');
+        desc.className = 'desc';
+        desc.textContent = todo.desc;
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        // MARKIEREN BUTTON
+        const markBtn = document.createElement('button');
+        markBtn.textContent = todo.done ? '✓ Erledigt' : 'Markieren';
+        markBtn.className = todo.done ? 'btn-success' : 'btn-primary';
+        markBtn.onclick = () => {
+          todo.done = !todo.done;
+          save();
+          render();
+        };
+
+        // LÖSCHEN BUTTON
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '🗑️ Löschen';
+        deleteBtn.className = 'btn-danger';
+        deleteBtn.onclick = () => {
+          if (confirm('Möchtest du diese Aufgabe wirklich löschen?')) {
+            todos.splice(index, 1);
+            save();
+            render();
+          }
+        };
+
+        actions.appendChild(markBtn);
+        actions.appendChild(deleteBtn);
+
+        li.appendChild(title);
+        li.appendChild(desc);
+        li.appendChild(actions);
+        list.appendChild(li);
+      });
+    }
+
+    function save() {
+      localStorage.setItem('todos', JSON.stringify(todos));
+      localStorage.setItem('categories', JSON.stringify(categories));
+    }
+
+    form.onsubmit = e => {
+      e.preventDefault();
+      const title = titleInput.value.trim();
+      const desc = descInput.value.trim();
+      const priority = priorityInput.value;
+      if (!title) return;
+
+      todos.push({ title, desc, priority, done: false });
+      titleInput.value = '';
+      descInput.value = '';
+      priorityInput.value = 'Mittel';
+      save();
+      render();
+    };
+
+    // Kategorien Funktion
+    const categoryForm = document.getElementById('categoryForm');
+    const categoryList = document.getElementById('categoryList');
+    
+    function renderCategories() {
+      categoryList.innerHTML = '';
+      categories.forEach((category, index) => {
+        const li = document.createElement('li');
+        li.className = 'category-item';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = category.name;
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Löschen';
+        deleteBtn.className = 'btn-danger';
+        deleteBtn.onclick = () => {
+          if (confirm('Möchtest du diese Kategorie wirklich löschen?')) {
+            categories.splice(index, 1);
+            save();
+            renderCategories();
+          }
+        };
+        
+        li.appendChild(nameSpan);
+        li.appendChild(deleteBtn);
+        categoryList.appendChild(li);
+      });
+    }
+    
+    categoryForm.onsubmit = e => {
+      e.preventDefault();
+      const categoryName = document.getElementById('categoryName').value.trim();
+      if (!categoryName) return;
+      
+      categories.push({ name: categoryName });
+      document.getElementById('categoryName').value = '';
+      save();
+      renderCategories();
+    };
+
+    // Initial rendern
+    render();
+    renderCategories();
+  </script>
 </body>
 </html>
