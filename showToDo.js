@@ -30,5 +30,3 @@ function render() {
     list.appendChild(li);
   });
 }
-
-// export nicht nötig, wird einfach global

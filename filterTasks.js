@@ -1,13 +1,13 @@
-// filterTasks.js — adds a small filter bar + wraps render() to filter by title + priority
+// filterTasks.js — small filter bar + wraps render() to filter by title + priority
 (function () {
   // Wait until showToDo.js defined render()
   function ready(fn){ document.readyState !== "loading" ? fn() : document.addEventListener("DOMContentLoaded", fn); }
 
   ready(function () {
-    if (typeof window.render !== "function") return; // showToDo.js must be loaded first
+    if (typeof window.render !== "function") return; // showToDo.js
     if (window.__filterWrapped) return;              // avoid double-wrapping
 
-    // --- 1) Inject a tiny filter toolbar (no HTML edits needed) ---
+    // --- 1) Inject a tiny filter toolbar ---
     const form = document.getElementById("todoForm");
     const bar = document.createElement("div");
     bar.id = "filters";
@@ -72,7 +72,7 @@
     titleInput.addEventListener("input", () => window.render());
     prioSelect.addEventListener("change", () => window.render());
 
-    // Initial pass (in case the page already rendered)
+    // Initial pass
     try { window.render(); } catch {}
   });
 })();

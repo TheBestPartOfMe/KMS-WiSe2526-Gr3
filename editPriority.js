@@ -1,10 +1,9 @@
-// editPriority.js — makes priority editable without changing your existing files
 (function () {
   // Wait until DOM is ready and render() exists
   function ready(fn){ document.readyState !== "loading" ? fn() : document.addEventListener("DOMContentLoaded", fn); }
 
   ready(function () {
-    if (typeof render !== "function") return;    // showToDo.js must be loaded first
+    if (typeof render !== "function") return;    // showToDo.js
     if (window.__prioWrapped) return;            // avoid double wrapping
 
     const originalRender = render;
@@ -46,7 +45,6 @@
         }
 
         // Set current value from the in-memory todos array
-        // NOTE: `todos` and `save` are globals defined in showToDo.js (non-module scripts share the same global scope)
         try { select.value = todos[i]?.priority ?? "Mittel"; } catch {}
 
         // On change, update the model, save, and re-render
@@ -66,7 +64,7 @@
     // Wrap global render()
     window.render = function wrappedRender() {
       originalRender();   // draw original UI
-      enhancePriorities(); // then add editable priority controls
+      enhancePriorities(); // add editable priority controls
     };
 
     window.__prioWrapped = true;
