@@ -9,23 +9,27 @@ const TodoApp = require('../app.js');
 let app;
 
 beforeEach(() => {
-  // HTML laden
-  const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
-  document.documentElement.innerHTML = html;
+  localStorage.clear();
+  document.body.innerHTML = `
+    <form id="todoForm"></form>
+    <form id="categoryForm"></form>
+    <ul id="taskList"></ul>
+    <ul id="categoryList"></ul>
+    <input id="taskTitle" />
+    <input id="taskDesc" />
+    <select id="taskPriority"></select>
+    <select id="taskCategory"></select>
+    <input id="categoryName" />
+    <input id="titleFilter" />
+    <select id="priorityFilter"></select>
+    <select id="categoryFilter"></select>
+    <div id="confirmModal"></div>
+    <div id="modalTitle"></div>
+    <div id="modalMessage"></div>
+    <button id="modalConfirm"></button>
+    <button id="modalCancel"></button>
+  `;
 
-  // localStorage mocken
-  Object.defineProperty(window, 'localStorage', {
-    value: (() => {
-      let store = {};
-      return {
-        getItem: key => store[key] || null,
-        setItem: (key, value) => { store[key] = value.toString(); },
-        clear: () => { store = {}; }
-      };
-    })()
-  });
-
-  // App instanziieren
   app = new TodoApp();
 });
 
@@ -40,8 +44,8 @@ describe('TodoApp', () => {
 
   test('deleteTask_confirmDialogReturnsTrue_taskIsDeleted', async () => {
     app.todos.push({ title: 'Aufgabe löschen', desc: '', priority: 'Mittel', category: '', done: false });
-    
-    jest.spyOn(app, 'showConfirmDialog').mockResolvedValue(true);
+
+    app.showConfirmDialog = jest.fn().mockResolvedValue(true);
     await app.deleteTask(0);
 
     expect(app.todos.length).toBe(0);
