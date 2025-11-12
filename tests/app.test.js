@@ -47,4 +47,22 @@ describe('TodoApp', () => {
     expect(app.todos.length).toBe(0);
   });
 
+  test('createTask_confirmDialogReturnsTrue_taskIsCreated', async () =>{
+    app.todos.push({ title: 'Aufgabe erstellen', desc: '', priority: 'Mittel', category: '', done: false });
+    jest.spyOn(app, 'showConfirmDialog').mockResolvedValue(true);
+    expect(app.todos.length).toBe(1);
+  })
+
+  test('createTask_confirmDialogReturnsTrue_taskHasRightTitle', async () =>{
+    app.todos.push({ title: 'Aufgabe erstellen', desc: '', priority: 'Mittel', category: '', done: false });
+    jest.spyOn(app, 'showConfirmDialog').mockResolvedValue(true);
+    expect(app.todos[0].title).toBe('Aufgabe erstellen');
+  })
+
+  test('createCategorie_confirmDialogReturnsTrue_categorieIsCreated', async () =>{
+    app.categories.push({name: 'Kategorie erstellen'});
+    jest.spyOn(app, 'showConfirmDialog').mockResolvedValue(true);
+    expect(app.categories.length).toBe(1);
+  })
+
 });
