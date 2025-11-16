@@ -187,4 +187,63 @@ test('filterTasks_priorityFilter_onlySelectedPriorityIsShown', () => {
   expect(listItems[0].textContent).toContain('Wichtige Aufgabe');
 });
 
+
+test('deleteCategory_removesCategoryAndUnassignsFromTasks', async () => {
+  // Arrange: Add a category and two tasks using it
+  app.categories.push({ name: 'Work' });
+  app.todos.push({ title: 'Task 1', desc: '', priority: 'Mittel', category: 'Work', done: false });
+  app.todos.push({ title: 'Task 2', desc: '', priority: 'Hoch', category: 'Work', done: false });
+
+  // Mock confirm dialog to always confirm
+  app.showConfirmDialog = jest.fn().mockResolvedValue(true);
+
+  // Act: Delete the category
+  await app.deleteCategory(0);
+
+  // Assert: Category is removed, tasks have category cleared
+  expect(app.categories.length).toBe(0);
+  expect(app.todos[0].category).toBe('');
+  expect(app.todos[1].category).toBe('');
+});
+
+
+test('addMultipleCategories_updatesDropdownsCorrectly', () => {
+  // Arrange: Add three categories
+  app.categories.push({ name: 'Home' }, { name: 'Work' }, { name: 'Hobby' });
+  app.renderCategories();
+
+  // Act: Get options from both dropdowns
+  const taskCategoryOptions = Array.from(app.elements.categoryInput.options).map(opt => opt.value);
+  const filterCategoryOptions = Array.from(app.elements.categoryFilter.options).map(opt => opt.value);
+
+  // Assert: All categories are present in both dropdowns
+  expect(taskCategoryOptions).toEqual(expect.arrayContaining(['Home', 'Work', 'Hobby']));
+  expect(filterCategoryOptions).toEqual(expect.arrayContaining(['Home', 'Work', 'Hobby']));
+});
+
+
+test('filterTasks_titleAndPriorityFilter_combinedFilters', () => {
+  // Arrange: Add tasks with different titles and priorities
+  app.todos.push({ title: 'Buy milk', desc: '', priority: 'Hoch', category: '', done: false });
+  app.todos.push({ title: 'Buy bread', desc: '', priority: 'Mittel', category: '', done: false });
+  app.todos.push({ title: 'Read book', desc: '', priority: 'Hoch', category: '', done: false });
+
+  // Set both filters
+  app.elements.titleFilter.value = 'buy';
+  const priorityFilter = app.elements.priorityFilter;
+  const optHigh = document.createElement('option');
+  optHigh.value = 'Hoch';
+  optHigh.textContent = 'Hoch';
+  priorityFilter.appendChild(optHigh);
+  priorityFilter.value = 'Hoch';
+
+  // Act
+  app.filterTasks();
+
+  // Assert: Only 'Buy milk' should be shown
+  const listItems = Array.from(document.querySelectorAll('#taskList li'));
+  expect(listItems.length).toBe(1);
+  expect(listItems[0].textContent).toContain('Buy milk');
+});
+
 });
