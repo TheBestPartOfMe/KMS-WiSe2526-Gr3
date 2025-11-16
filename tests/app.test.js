@@ -69,4 +69,67 @@ describe('TodoApp', () => {
     expect(app.categories.length).toBe(1);
   })
 
+  test('filterCategories_twoTasksWithDifferentCategories_onlySelectedIsShown', () => {
+  // create two tasks with different categries
+  app.todos.push({ title: 'Aufgabe 1', desc: '', priority: 'Mittel', category: 'Kategorie 1', done: false });
+  app.todos.push({ title: 'Aufgabe 2', desc: '', priority: 'Mittel', category: 'Kategorie 2', done: false });
+
+  // put category options into DOM
+  const categoryFilter = app.elements.categoryFilter;
+
+  const option1 = document.createElement('option');
+  option1.value = 'Kategorie 1';
+  option1.textContent = 'Kategorie 1';
+  categoryFilter.appendChild(option1);
+
+  const option2 = document.createElement('option');
+  option2.value = 'Kategorie 2';
+  option2.textContent = 'Kategorie 2';
+  categoryFilter.appendChild(option2);
+
+  // set filter
+  categoryFilter.value = 'Kategorie 1';
+
+  // trigger filter
+  app.filterTasks();
+
+  // collect all list elements in tasklist
+  const listItems = Array.from(document.querySelectorAll('#taskList li'));
+
+  // check
+  expect(listItems.length).toBe(1);
+  expect(listItems[0].textContent).toContain('Aufgabe 1');
+});
+
+test('filterCategories_twoTasksWithNonSelectedCategory_noTaskIsShown', () => {
+  // create two tasks with different categries
+  app.todos.push({ title: 'Aufgabe 1', desc: '', priority: 'Mittel', category: 'Kategorie 1', done: false });
+  app.todos.push({ title: 'Aufgabe 2', desc: '', priority: 'Mittel', category: 'Kategorie 1', done: false });
+
+  // put category options into DOM
+  const categoryFilter = app.elements.categoryFilter;
+
+  const option1 = document.createElement('option');
+  option1.value = 'Kategorie 1';
+  option1.textContent = 'Kategorie 1';
+  categoryFilter.appendChild(option1);
+
+  const option2 = document.createElement('option');
+  option2.value = 'Kategorie 2';
+  option2.textContent = 'Kategorie 2';
+  categoryFilter.appendChild(option2);
+
+  // set filter
+  categoryFilter.value = 'Kategorie 2';
+
+  // trigger filter
+  app.filterTasks();
+
+  // collect all list elements in tasklist
+  const listItems = Array.from(document.querySelectorAll('#taskList li'));
+
+  // check
+  expect(listItems.length).toBe(0);
+});
+
 });
