@@ -51,6 +51,15 @@ describe('TodoApp', () => {
     expect(app.todos.length).toBe(0);
   });
 
+  test('deleteTask_confirmDialogReturnsFalse_taskIsNotDeleted', async () => {
+  app.todos.push({ title: 'Aufgabe löschen2', desc: '', priority: 'Mittel', category: '', done: false });
+
+  app.showConfirmDialog = jest.fn().mockResolvedValue(false);
+  await app.deleteTask(0);
+
+  expect(app.todos.length).toBe(1);
+});
+
   test('createTask_confirmDialogReturnsTrue_taskIsCreated', async () =>{
     app.todos.push({ title: 'Aufgabe erstellen', desc: '', priority: 'Mittel', category: '', done: false });
     jest.spyOn(app, 'showConfirmDialog').mockResolvedValue(true);
@@ -130,6 +139,52 @@ test('filterCategories_twoTasksWithNonSelectedCategory_noTaskIsShown', () => {
 
   // check
   expect(listItems.length).toBe(0);
+});
+
+test('filterTasks_titleFilterMatchingTitle_onlyMatchingTaskIsShown', () => {
+  // Arrange: zwei Aufgaben mit unterschiedlichen Titeln
+  app.todos.push({ title: 'Einkaufen', desc: '', priority: 'Mittel', category: '', done: false });
+  app.todos.push({ title: 'Hausaufgabe', desc: '', priority: 'Mittel', category: '', done: false });
+
+  // Titel-Filter setzen (case-insensitive, daher klein geschrieben ok)
+  app.elements.titleFilter.value = 'eink'; // sollte "Einkaufen" matchen
+
+  // Act
+  app.filterTasks();
+
+  // Assert
+  const listItems = Array.from(document.querySelectorAll('#taskList li'));
+  expect(listItems.length).toBe(1);
+  expect(listItems[0].textContent).toContain('Einkaufen');
+});
+
+test('filterTasks_priorityFilter_onlySelectedPriorityIsShown', () => {
+  // Arrange: zwei Aufgaben mit unterschiedlicher Priorität
+  app.todos.push({ title: 'Wichtige Aufgabe', desc: '', priority: 'Hoch', category: '', done: false });
+  app.todos.push({ title: 'Unwichtige Aufgabe', desc: '', priority: 'Niedrig', category: '', done: false });
+
+  // Priority-Select aus den DOM-Elementen holen
+  const priorityFilter = app.elements.priorityFilter;
+
+  // Optionen für Hoch und Niedrig hinzufügen
+  const optHigh = document.createElement('option');
+  optHigh.value = 'Hoch';
+  optHigh.textContent = 'Hoch';
+  priorityFilter.appendChild(optHigh);
+
+  const optLow = document.createElement('option');
+  optLow.value = 'Niedrig';
+  optLow.textContent = 'Niedrig';
+  priorityFilter.appendChild(optLow);
+
+  // Jetzt eine existierende Option auswählen
+  priorityFilter.value = 'Hoch';
+  app.filterTasks();
+
+  // Assert: nur die Aufgabe mit hoher Priorität soll angezeigt werden
+  const listItems = Array.from(document.querySelectorAll('#taskList li'));
+  expect(listItems.length).toBe(1);
+  expect(listItems[0].textContent).toContain('Wichtige Aufgabe');
 });
 
 });
