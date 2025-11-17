@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint '*/*.js'",
+    "lint:fix": "eslint '*/*.js' --fix"
   },
   "keywords": [],
   "author": "",
@@ -12,5 +14,12 @@
   "type": "commonjs",
   "dependencies": {
     "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^7.2.1"
   }
 }
