@@ -302,5 +302,5 @@ test('filterTasks_titleAndPriorityFilter_combinedFilters', () => {
     expect(einkaufenTask.category).toBe('Privat');
     expect(hausaufgabenTask.category).toBe('Schule');
   });
-
+  
 });
