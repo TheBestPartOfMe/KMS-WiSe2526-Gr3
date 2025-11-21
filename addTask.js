@@ -1,14 +1,16 @@
+/* global render */
 const titleInput = document.getElementById('taskTitle');
 const descInput = document.getElementById('taskDesc');
 const priorityInput = document.getElementById('taskPriority');
-const list = document.getElementById('taskList');
 const form = document.getElementById('todoForm');
 
-let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+const todos = JSON.parse(localStorage.getItem('todos') || '[]'); // Unused variable removed
 
-function save() {
+function save () {
   localStorage.setItem('todos', JSON.stringify(todos));
 }
+
+window.save = save;
 
 form.onsubmit = e => {
   e.preventDefault();

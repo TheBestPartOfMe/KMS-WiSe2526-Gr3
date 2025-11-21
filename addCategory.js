@@ -1,9 +1,9 @@
 const categoryNameInput = document.getElementById('categoryName');
 const categoryForm = document.getElementById('categoryForm');
 
-let categories = JSON.parse(localStorage.getItem('categories') || '[]');
+const categories = JSON.parse(localStorage.getItem('categories') || '[]');
 
-function saveCategories() {
+function saveCategories () {
   localStorage.setItem('categories', JSON.stringify(categories));
 }
 
@@ -20,3 +20,8 @@ categoryForm.onsubmit = e => {
 
   renderCategories?.();
 };
+
+// Define renderCategories to avoid 'not defined' error
+function renderCategories () {
+  // Placeholder created to prevent errors and rendering logic can be implemented (if needed) in this function
+}
