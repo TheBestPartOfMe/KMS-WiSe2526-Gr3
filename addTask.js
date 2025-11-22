@@ -4,9 +4,9 @@ const priorityInput = document.getElementById('taskPriority');
 const list = document.getElementById('taskList');
 const form = document.getElementById('todoForm');
 
-let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+const todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-function save() {
+function save () {
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 

@@ -1,4 +1,4 @@
-function render() {
+function render () {
   const list = document.getElementById('taskList');
   list.innerHTML = '';
   todos.forEach((todo) => {
@@ -15,14 +15,14 @@ function render() {
 
     const actions = document.createElement('div');
     actions.className = 'actions';
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "🗑️ Löschen";
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '🗑️ Löschen';
     deleteBtn.onclick = () => {
-      let todos = todos.filter(t => t.title !== todo.title);
+      const todos = todos.filter(t => t.title !== todo.title);
       save();
       render();
     };
-    actions.appendChild(deleteBtn); 
+    actions.appendChild(deleteBtn);
 
     li.appendChild(title);
     li.appendChild(desc);

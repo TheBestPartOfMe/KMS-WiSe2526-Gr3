@@ -1,9 +1,9 @@
 const categoryNameInput = document.getElementById('categoryName');
 const categoryForm = document.getElementById('categoryForm');
 
-let categories = JSON.parse(localStorage.getItem('categories') || '[]');
+const categories = JSON.parse(localStorage.getItem('categories') || '[]');
 
-function saveCategories() {
+function saveCategories () {
   localStorage.setItem('categories', JSON.stringify(categories));
 }
 
