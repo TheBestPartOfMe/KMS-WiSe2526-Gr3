@@ -1,3 +1,4 @@
+/* global render, save, todos */
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.delete-btn');
   if (!btn) return;

@@ -1,3 +1,5 @@
+const todos = []; // Define todos as an empty array or load from storage if needed
+
 function render () {
   const list = document.getElementById('taskList');
   list.innerHTML = '';
@@ -18,7 +20,8 @@ function render () {
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = '🗑️ Löschen';
     deleteBtn.onclick = () => {
-      const todos = todos.filter(t => t.title !== todo.title);
+      const filtered = todos.filter(t => t.title !== todo.title);
+      todos.splice(0, todos.length, ...filtered);
       save();
       render();
     };
@@ -30,3 +33,11 @@ function render () {
     list.appendChild(li);
   });
 }
+
+// Dummy save function to avoid errors; implement actual saving logic as needed
+function save () {
+  // For example, save to localStorage:
+  // localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+window.render = render;

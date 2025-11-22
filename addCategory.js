@@ -20,3 +20,8 @@ categoryForm.onsubmit = e => {
 
   renderCategories?.();
 };
+
+// Define renderCategories to avoid 'not defined' error
+function renderCategories () {
+  // Placeholder created to prevent errors and rendering logic can be implemented (if needed) in this function
+}

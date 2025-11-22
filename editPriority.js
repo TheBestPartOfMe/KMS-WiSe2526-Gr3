@@ -1,3 +1,4 @@
+/* global render, save, todos */
 (function () {
   // Wait until DOM is ready and render() exists
   function ready (fn) { document.readyState !== 'loading' ? fn() : document.addEventListener('DOMContentLoaded', fn); }

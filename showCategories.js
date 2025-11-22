@@ -1,3 +1,4 @@
+/* global categories */
 const categoryList = document.getElementById('categoryList');
 
 function renderCategories () {
